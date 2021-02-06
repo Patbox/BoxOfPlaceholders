@@ -1,0 +1,1 @@
+For list of placeholders, see https://github.com/Patbox/FabricPlaceholderAPI/wiki/Box-Of-Placeholders
