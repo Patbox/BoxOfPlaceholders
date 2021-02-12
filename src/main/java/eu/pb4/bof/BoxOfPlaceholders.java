@@ -4,6 +4,7 @@ import eu.pb4.bof.mods.LuckPermsPlaceholders;
 import eu.pb4.bof.mods.PlasmidPlaceholders;
 import eu.pb4.bof.mods.VanishPlaceholders;
 import eu.pb4.bof.other.MiniMessagePlaceholders;
+import eu.pb4.bof.other.BoFPlaceholders;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -48,6 +49,7 @@ public class BoxOfPlaceholders implements ModInitializer {
 		}
 
 		MiniMessagePlaceholders.register();
+		BoFPlaceholders.register();
 
 	}
 }
