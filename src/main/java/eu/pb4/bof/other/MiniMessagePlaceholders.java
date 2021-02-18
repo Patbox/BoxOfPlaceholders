@@ -8,22 +8,35 @@ import net.minecraft.util.Identifier;
 
 public class MiniMessagePlaceholders {
     public static void register() {
-        PlaceholderAPI.register(new Identifier("minimessage", "parse"), ctx -> PlaceholderResult.value(Helper.parseMiniMessage(ctx.getArgument())));
+        PlaceholderAPI.register(new Identifier("minimessage", "parse"), ctx -> {
+            if (ctx.hasArgument()) {
+                return PlaceholderResult.value(Helper.parseMiniMessage(ctx.getArgument()));
+            } else {
+                return PlaceholderResult.invalid();
+            }
+        });
 
         PlaceholderAPI.register(new Identifier("minimessage", "parse_placeholders"), ctx -> {
-            if (ctx.playerExist()) {
-                return PlaceholderResult.value(PlaceholderAPI.parseTextAlt(Helper.parseMiniMessage(ctx.getArgument()), ctx.getPlayer()));
+            if (ctx.hasArgument()) {
+                if (ctx.playerExist()) {
+                    return PlaceholderResult.value(PlaceholderAPI.parseTextAlt(Helper.parseMiniMessage(ctx.getArgument()), ctx.getPlayer()));
+                } else {
+                    return PlaceholderResult.value(PlaceholderAPI.parseTextAlt(Helper.parseMiniMessage(ctx.getArgument()), ctx.getServer()));
+                }
             } else {
-                return PlaceholderResult.value(PlaceholderAPI.parseTextAlt(Helper.parseMiniMessage(ctx.getArgument()), ctx.getServer()));
+                return PlaceholderResult.invalid();
             }
+
         });
 
 
         PlaceholderAPI.register(new Identifier("minimessage", "placeholder"), ctx -> {
-            if (ctx.playerExist()) {
-                return PlaceholderResult.value(PlaceholderAPI.parsePlaceholder(PlaceholderContext.create(ctx.getArgument(), ctx.getPlayer())).getText());
+            if (ctx.hasArgument()) {
+                PlaceholderContext context = ctx.playerExist() ? PlaceholderContext.create(ctx.getArgument(), ctx.getPlayer()) : PlaceholderContext.create(ctx.getArgument(), ctx.getServer());
+                PlaceholderResult result = PlaceholderAPI.parsePlaceholder(context);
+                return PlaceholderResult.value(Helper.parseMiniMessage(result.getString()));
             } else {
-                return PlaceholderResult.value(PlaceholderAPI.parsePlaceholder(PlaceholderContext.create(ctx.getArgument(), ctx.getServer())).getText());
+                return PlaceholderResult.invalid();
             }
         });
     }

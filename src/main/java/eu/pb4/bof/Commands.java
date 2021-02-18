@@ -1,9 +1,11 @@
 package eu.pb4.bof;
 
+import carpet.script.language.Sys;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import eu.pb4.placeholders.PlaceholderAPI;
+import me.lucko.fabric.api.permissions.v0.Permissions;
 import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 import net.minecraft.command.argument.TextArgumentType;
 import net.minecraft.server.command.ServerCommandSource;
@@ -20,6 +22,7 @@ public class Commands {
         CommandRegistrationCallback.EVENT.register((dispatcher, dedicated) -> {
             dispatcher.register(
                     literal("placeholder")
+                            .requires(Permissions.require("bof.command", 3))
                             .then(literal("string")
                                     .then(argument("test", StringArgumentType.greedyString())
                                     .executes(Commands::parseString)
@@ -54,7 +57,7 @@ public class Commands {
         ServerPlayerEntity player = source.getPlayer();
 
         if (player != null) {
-            player.sendMessage(PlaceholderAPI.parseText(test, player), false);
+            source.sendFeedback(PlaceholderAPI.parseText(test, player), false);
         } else {
             source.sendFeedback(new LiteralText("Only players can use this command!"), false);
         }

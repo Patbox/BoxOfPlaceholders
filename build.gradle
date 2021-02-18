@@ -26,13 +26,13 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation include("com.github.Patbox:FabricPlaceholderAPI:0.2.0")
+	modImplementation include("com.github.Patbox:FabricPlaceholderAPI:0.2.1")
 
 	modImplementation 'me.lucko:fabric-permissions-api:0.1-SNAPSHOT'
 	modImplementation "com.github.SuperCoder7979:databreaker:0.2.6"
 	modImplementation "com.github.123456687548:vanish:1.16.5_1.2.3"
 	modImplementation "xyz.nucleoid:plasmid:0.4.122"
-	modImplementation "com.github.Patbox:StyledPlayerList:1.1.3"
+	modImplementation "com.github.Patbox:StyledPlayerList:1.2.0"
 
 
 	modImplementation include("net.kyori:adventure-platform-fabric:4.0.0-SNAPSHOT")
