@@ -3,6 +3,7 @@ package eu.pb4.bof.mods;
 import eu.pb4.bof.Helper;
 import eu.pb4.placeholders.PlaceholderAPI;
 import eu.pb4.placeholders.PlaceholderResult;
+import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
@@ -15,10 +16,14 @@ import java.util.Objects;
 import java.util.SortedMap;
 
 public class LuckPermsPlaceholders {
+    public static LuckPerms LUCKPERMS = null;
+
     public static void register() {
         PlaceholderAPI.register(new Identifier("luckperms", "prefix"), ctx -> {
-            if (ctx.playerExist()) {
-                User user = LuckPermsProvider.get().getUserManager().getUser(ctx.getPlayer().getUuid());
+            if (getLuckPerms()) {
+                return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
+            } else if (ctx.playerExist()) {
+                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
                 if (user != null) {
                     String out = "";
                     int amount;
@@ -54,8 +59,10 @@ public class LuckPermsPlaceholders {
         });
 
         PlaceholderAPI.register(new Identifier("luckperms", "suffix"), ctx -> {
-            if (ctx.playerExist()) {
-                User user = LuckPermsProvider.get().getUserManager().getUser(ctx.getPlayer().getUuid());
+            if (getLuckPerms()) {
+                return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
+            } else if (ctx.playerExist()) {
+                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
                 if (user != null) {
                     String out = "";
                     int amount;
@@ -91,9 +98,11 @@ public class LuckPermsPlaceholders {
         });
 
         PlaceholderAPI.register(new Identifier("luckperms", "prefix_if_in_group"), ctx -> {
-            if (ctx.playerExist() && ctx.getArgument().length() > 0) {
-                User user = LuckPermsProvider.get().getUserManager().getUser(ctx.getPlayer().getUuid());
-                Group group = LuckPermsProvider.get().getGroupManager().getGroup(ctx.getArgument());
+            if (getLuckPerms()) {
+                return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
+            } else if (ctx.playerExist() && ctx.getArgument().length() > 0) {
+                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
+                Group group = LUCKPERMS.getGroupManager().getGroup(ctx.getArgument());
 
                 if (user != null && group != null) {
                     return PlaceholderResult.value(user.getInheritedGroups(user.getQueryOptions()).contains(group)
@@ -108,9 +117,11 @@ public class LuckPermsPlaceholders {
         });
 
         PlaceholderAPI.register(new Identifier("luckperms", "suffix_if_in_group"), ctx -> {
-            if (ctx.playerExist() && ctx.getArgument().length() > 0) {
-                User user = LuckPermsProvider.get().getUserManager().getUser(ctx.getPlayer().getUuid());
-                Group group = LuckPermsProvider.get().getGroupManager().getGroup(ctx.getArgument());
+            if (getLuckPerms()) {
+                return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
+            } else if (ctx.playerExist() && ctx.getArgument().length() > 0) {
+                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
+                Group group = LUCKPERMS.getGroupManager().getGroup(ctx.getArgument());
 
                 if (user != null && group != null) {
                     return PlaceholderResult.value(user.getInheritedGroups(user.getQueryOptions()).contains(group)
@@ -125,8 +136,10 @@ public class LuckPermsPlaceholders {
         });
 
         PlaceholderAPI.register(new Identifier("luckperms", "primary_group"), ctx -> {
-            if (ctx.playerExist()) {
-                User user = LuckPermsProvider.get().getUserManager().getUser(ctx.getPlayer().getUuid());
+            if (getLuckPerms()) {
+                return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
+            } else if (ctx.playerExist()) {
+                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
 
                 if (user != null) {
                     return PlaceholderResult.value(user.getPrimaryGroup());
@@ -141,8 +154,10 @@ public class LuckPermsPlaceholders {
 
 
         PlaceholderAPI.register(new Identifier("luckperms", "group_expiry_time"), ctx -> {
-            if (ctx.playerExist() && ctx.getArgument().length() > 0) {
-                User user = LuckPermsProvider.get().getUserManager().getUser(ctx.getPlayer().getUuid());
+            if (getLuckPerms()) {
+                return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
+            } else if (ctx.playerExist() && ctx.getArgument().length() > 0) {
+                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
 
                 if (user != null) {
                     Duration time = user.resolveInheritedNodes(user.getQueryOptions()).stream()
@@ -166,8 +181,10 @@ public class LuckPermsPlaceholders {
         });
 
         PlaceholderAPI.register(new Identifier("luckperms", "permission_expiry_time"), ctx -> {
-            if (ctx.playerExist() && ctx.getArgument().length() > 0) {
-                User user = LuckPermsProvider.get().getUserManager().getUser(ctx.getPlayer().getUuid());
+            if (getLuckPerms()) {
+                return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
+            } else if (ctx.playerExist() && ctx.getArgument().length() > 0) {
+                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
 
                 if (user != null) {
                     Duration time = user.resolveInheritedNodes(user.getQueryOptions()).stream()
@@ -189,5 +206,16 @@ public class LuckPermsPlaceholders {
                 return PlaceholderResult.invalid("No player/argument!");
             }
         });
+    }
+
+
+    private static boolean getLuckPerms() {
+        try {
+            LUCKPERMS = LuckPermsProvider.get();
+            return false;
+        } catch (Exception e) {
+            LUCKPERMS = null;
+            return true;
+        }
     }
 }

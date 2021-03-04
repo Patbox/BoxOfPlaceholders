@@ -1,5 +1,6 @@
 package eu.pb4.bof;
 
+import eu.pb4.bof.config.ConfigManager;
 import eu.pb4.bof.mods.LuckPermsPlaceholders;
 import eu.pb4.bof.mods.PlasmidPlaceholders;
 import eu.pb4.bof.mods.VanishPlaceholders;
@@ -29,7 +30,10 @@ public class BoxOfPlaceholders implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		ServerLifecycleEvents.SERVER_STARTING.register(server -> this.audiences = FabricServerAudiences.of(server));
+		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+			this.audiences = FabricServerAudiences.of(server);
+			ConfigManager.loadConfig();
+		});
 		ServerLifecycleEvents.SERVER_STOPPED.register(server -> this.audiences = null);
 		INSTANCE = this;
 

@@ -1,5 +1,7 @@
 package eu.pb4.bof.other;
 
+import eu.pb4.bof.config.Animation;
+import eu.pb4.bof.config.ConfigManager;
 import eu.pb4.placeholders.PlaceholderAPI;
 import eu.pb4.placeholders.PlaceholderResult;
 import net.minecraft.util.Identifier;
@@ -50,6 +52,21 @@ public class BoFPlaceholders {
 
             return PlaceholderResult.value(String.format("%.1f", (float) (heapUsage.getMax() - heapUsage.getUsed()) / heapUsage.getMax() * 100));
 
+        });
+
+        PlaceholderAPI.register(new Identifier("bof", "animation"), (ctx) -> {
+            if (ctx.hasArgument()) {
+                Animation animation = ConfigManager.getAnimation(ctx.getArgument());
+                if (animation != null) {
+                    return PlaceholderResult.value(
+                            ctx.playerExist()
+                                    ? animation.getAnimationFrame(ctx.getPlayer())
+                                    : animation.getAnimationFrame(ctx.getServer())
+                    );
+                }
+            }
+
+            return PlaceholderResult.invalid("Invalid animation");
         });
     }
 }
