@@ -19,6 +19,9 @@
       "eu.pb4.bof.BoxOfPlaceholders"
     ]
   },
+  "mixins": [
+    "boxofplaceholders.mixins.json"
+  ],
   "depends": {
     "fabricloader": ">=0.7.4",
     "fabric": "*",

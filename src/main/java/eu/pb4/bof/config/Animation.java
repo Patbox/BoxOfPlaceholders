@@ -29,8 +29,8 @@ public class Animation {
 
 
 
-    public Text getAnimationFrame(Object object) {
-        int frame = animationStatus.getOrDefault(object, 0);
+    public Text getAnimationFrame(MinecraftServer server) {
+        int frame = animationStatus.getOrDefault(server, 0);
         int realFrame = frame / animationRate;
 
         frame += 1;
@@ -39,15 +39,23 @@ public class Animation {
             frame = 0;
         }
 
-        animationStatus.put(object, frame);
+        animationStatus.put(server, frame);
 
+        return PlaceholderAPI.parseText(frames.get(realFrame), server);
+    }
 
-        if (object instanceof ServerPlayerEntity) {
-            return PlaceholderAPI.parseText(frames.get(realFrame), (ServerPlayerEntity) object);
-        } else if (object instanceof MinecraftServer) {
-            return PlaceholderAPI.parseText(frames.get(realFrame), (MinecraftServer) object);
-        } else {
-            return frames.get(realFrame);
+    public Text getAnimationFrame(ServerPlayerEntity player) {
+        int frame = animationStatus.getOrDefault(player.getUuid(), 0);
+        int realFrame = frame / animationRate;
+
+        frame += 1;
+
+        if (frames.size() * animationRate <= frame) {
+            frame = 0;
         }
+
+        animationStatus.put(player.getUuid(), frame);
+
+        return PlaceholderAPI.parseText(frames.get(realFrame), player);
     }
 }

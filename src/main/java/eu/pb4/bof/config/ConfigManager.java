@@ -12,7 +12,7 @@ import java.util.LinkedHashMap;
 public class ConfigManager {
     private static final Gson GSON = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
 
-    private static final LinkedHashMap<String, Animation> ANIMATIONS = new LinkedHashMap<>();
+    public static final LinkedHashMap<String, Animation> ANIMATIONS = new LinkedHashMap<>();
 
     public static boolean loadConfig() {
         try {
