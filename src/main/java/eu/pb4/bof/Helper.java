@@ -1,8 +1,5 @@
 package eu.pb4.bof;
 
-import net.kyori.adventure.platform.fabric.impl.WrappedComponent;
-import net.minecraft.text.Text;
-import org.jetbrains.annotations.NotNull;
 
 import java.time.Duration;
 
@@ -26,10 +23,5 @@ public class Helper {
         } else {
             return "---";
         }
-    }
-
-    public static Text parseMiniMessage(@NotNull String string) {
-        Text component = BoxOfPlaceholders.getAdventure().toNative(BoxOfPlaceholders.miniMessage.parse(string));
-        return component.shallowCopy();
     }
 }

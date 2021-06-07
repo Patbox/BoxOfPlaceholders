@@ -2,6 +2,7 @@ package eu.pb4.bof.config;
 
 import eu.pb4.bof.Helper;
 import eu.pb4.placeholders.PlaceholderAPI;
+import eu.pb4.placeholders.TextParser;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,7 +23,7 @@ public class Animation {
         animationRate = data.updateRate > 0 ? data.updateRate : 1;
 
         for (String frame : data.frames) {
-            Text text = Helper.parseMiniMessage(frame);
+            Text text = TextParser.parse(frame);
             frames.add(text);
         }
     }

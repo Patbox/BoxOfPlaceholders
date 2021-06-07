@@ -3,12 +3,14 @@ package eu.pb4.bof.mods;
 import eu.pb4.bof.Helper;
 import eu.pb4.placeholders.PlaceholderAPI;
 import eu.pb4.placeholders.PlaceholderResult;
+import eu.pb4.placeholders.TextParser;
 import net.luckperms.api.LuckPerms;
 import net.luckperms.api.LuckPermsProvider;
 import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
+import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
 import java.time.Duration;
@@ -48,7 +50,7 @@ public class LuckPermsPlaceholders {
                         out = user.getCachedData().getMetaData().getPrefix();
                     }
 
-                    return PlaceholderResult.value(out != null ? out : "");
+                    return PlaceholderResult.value(out != null ? TextParser.parse(out) : LiteralText.EMPTY);
                 } else {
                     return PlaceholderResult.invalid("No data!");
                 }
@@ -87,7 +89,7 @@ public class LuckPermsPlaceholders {
                         out = user.getCachedData().getMetaData().getSuffix();
                     }
 
-                    return PlaceholderResult.value(out != null ? out : "");
+                    return PlaceholderResult.value(out != null ? TextParser.parse(out) : LiteralText.EMPTY);
                 } else {
                     return PlaceholderResult.invalid("No data!");
                 }
@@ -106,7 +108,7 @@ public class LuckPermsPlaceholders {
 
                 if (user != null && group != null) {
                     return PlaceholderResult.value(user.getInheritedGroups(user.getQueryOptions()).contains(group)
-                            ? group.getCachedData().getMetaData().getPrefix() : "");
+                            ? TextParser.parse(group.getCachedData().getMetaData().getPrefix()) : LiteralText.EMPTY);
                 } else {
                     return PlaceholderResult.invalid("No data!");
                 }
@@ -119,13 +121,13 @@ public class LuckPermsPlaceholders {
         PlaceholderAPI.register(new Identifier("luckperms", "suffix_if_in_group"), ctx -> {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
-            } else if (ctx.playerExist() && ctx.getArgument().length() > 0) {
+            } else if (ctx.hasPlayer() && ctx.getArgument().length() > 0) {
                 User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
                 Group group = LUCKPERMS.getGroupManager().getGroup(ctx.getArgument());
 
                 if (user != null && group != null) {
                     return PlaceholderResult.value(user.getInheritedGroups(user.getQueryOptions()).contains(group)
-                            ? group.getCachedData().getMetaData().getSuffix() : "");
+                            ? TextParser.parse(group.getCachedData().getMetaData().getSuffix()) : LiteralText.EMPTY);
                 } else {
                     return PlaceholderResult.invalid("No data!");
                 }
@@ -138,7 +140,7 @@ public class LuckPermsPlaceholders {
         PlaceholderAPI.register(new Identifier("luckperms", "primary_group"), ctx -> {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
-            } else if (ctx.playerExist()) {
+            } else if (ctx.hasPlayer()) {
                 User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
 
                 if (user != null) {

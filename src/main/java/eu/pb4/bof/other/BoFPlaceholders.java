@@ -59,7 +59,7 @@ public class BoFPlaceholders {
                 Animation animation = ConfigManager.getAnimation(ctx.getArgument());
                 if (animation != null) {
                     return PlaceholderResult.value(
-                            ctx.playerExist()
+                            ctx.hasPlayer()
                                     ? animation.getAnimationFrame(ctx.getPlayer())
                                     : animation.getAnimationFrame(ctx.getServer())
                     );
