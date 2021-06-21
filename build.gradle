@@ -13,10 +13,15 @@ group = project.maven_group
 repositories {
 	mavenCentral()
 	maven { url 'https://jitpack.io' }
+	maven { url "https://maven.jamieswhiteshirt.com/libs-release/" }
 	maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 	maven { url 'https://repo.lucko.me/' }
 	maven { url 'https://maven.nucleoid.xyz/' }
 	maven { url 'https://masa.dy.fi/maven' }
+
+	flatDir {
+		dirs './modsWithCompat'
+	}
 }
 
 dependencies {
@@ -26,13 +31,16 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation include('eu.pb4:placeholder-api:1.0.0-rc1-1.17')
+	modImplementation include('eu.pb4:placeholder-api:1.0.0-rc2-1.17')
 
 	modImplementation 'me.lucko:fabric-permissions-api:0.1-SNAPSHOT'
 	modCompileOnly "com.github.123456687548:vanish:1.16.5_1.2.3"
 	//modImplementation "xyz.nucleoid:plasmid:0.4.122"
 
 	modRuntime "com.github.SuperCoder7979:databreaker:0.2.6"
+	modCompileOnly "draylar:get-off-my-lawn:1.17-1.4.0-beta"
+	modCompileOnly "com.jamieswhiteshirt:rtree-3i-lite-fabric:0.3.0"
+
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.

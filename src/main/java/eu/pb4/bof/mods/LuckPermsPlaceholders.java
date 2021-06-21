@@ -10,6 +10,7 @@ import net.luckperms.api.model.group.Group;
 import net.luckperms.api.model.user.User;
 import net.luckperms.api.node.Node;
 import net.luckperms.api.node.NodeType;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
 
@@ -24,8 +25,8 @@ public class LuckPermsPlaceholders {
         PlaceholderAPI.register(new Identifier("luckperms", "prefix"), ctx -> {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
-            } else if (ctx.playerExist()) {
-                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
+            } else if (ctx.hasPlayer()) {
+                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
                 if (user != null) {
                     String out = "";
                     int amount;
@@ -63,8 +64,8 @@ public class LuckPermsPlaceholders {
         PlaceholderAPI.register(new Identifier("luckperms", "suffix"), ctx -> {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
-            } else if (ctx.playerExist()) {
-                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
+            } else if (ctx.hasPlayer()) {
+                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
                 if (user != null) {
                     String out = "";
                     int amount;
@@ -102,8 +103,8 @@ public class LuckPermsPlaceholders {
         PlaceholderAPI.register(new Identifier("luckperms", "prefix_if_in_group"), ctx -> {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
-            } else if (ctx.playerExist() && ctx.getArgument().length() > 0) {
-                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
+            } else if (ctx.hasPlayer() && ctx.getArgument().length() > 0) {
+                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
                 Group group = LUCKPERMS.getGroupManager().getGroup(ctx.getArgument());
 
                 if (user != null && group != null) {
@@ -122,7 +123,7 @@ public class LuckPermsPlaceholders {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
             } else if (ctx.hasPlayer() && ctx.getArgument().length() > 0) {
-                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
+                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
                 Group group = LUCKPERMS.getGroupManager().getGroup(ctx.getArgument());
 
                 if (user != null && group != null) {
@@ -141,7 +142,7 @@ public class LuckPermsPlaceholders {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
             } else if (ctx.hasPlayer()) {
-                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
+                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
 
                 if (user != null) {
                     return PlaceholderResult.value(user.getPrimaryGroup());
@@ -158,8 +159,8 @@ public class LuckPermsPlaceholders {
         PlaceholderAPI.register(new Identifier("luckperms", "group_expiry_time"), ctx -> {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
-            } else if (ctx.playerExist() && ctx.getArgument().length() > 0) {
-                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
+            } else if (ctx.hasPlayer() && ctx.getArgument().length() > 0) {
+                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
 
                 if (user != null) {
                     Duration time = user.resolveInheritedNodes(user.getQueryOptions()).stream()
@@ -185,8 +186,8 @@ public class LuckPermsPlaceholders {
         PlaceholderAPI.register(new Identifier("luckperms", "permission_expiry_time"), ctx -> {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
-            } else if (ctx.playerExist() && ctx.getArgument().length() > 0) {
-                User user = LUCKPERMS.getUserManager().getUser(ctx.getPlayer().getUuid());
+            } else if (ctx.hasPlayer() && ctx.getArgument().length() > 0) {
+                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
 
                 if (user != null) {
                     Duration time = user.resolveInheritedNodes(user.getQueryOptions()).stream()

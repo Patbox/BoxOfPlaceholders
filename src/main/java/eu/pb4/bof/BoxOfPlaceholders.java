@@ -1,9 +1,10 @@
 package eu.pb4.bof;
 
 import eu.pb4.bof.config.ConfigManager;
+import eu.pb4.bof.mods.GOMLPlaceholders;
 import eu.pb4.bof.mods.LuckPermsPlaceholders;
 import eu.pb4.bof.mods.VanishPlaceholders;
-import eu.pb4.bof.other.BoFPlaceholders;
+import eu.pb4.bof.other.BoPPlaceholders;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
@@ -36,9 +37,13 @@ public class BoxOfPlaceholders implements ModInitializer {
 			VanishPlaceholders.register();
 		}
 
+		if (loader.isModLoaded("goml")) {
+			GOMLPlaceholders.register();
+		}
+
 		if (loader.isModLoaded("plasmid")) {
 		}
 
-		BoFPlaceholders.register();
+		BoPPlaceholders.register();
 	}
 }

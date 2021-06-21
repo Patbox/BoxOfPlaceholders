@@ -1,6 +1,6 @@
 package eu.pb4.bof.config;
 
-import eu.pb4.bof.Helper;
+import eu.pb4.bof.config.data.AnimationData;
 import eu.pb4.placeholders.PlaceholderAPI;
 import eu.pb4.placeholders.TextParser;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;

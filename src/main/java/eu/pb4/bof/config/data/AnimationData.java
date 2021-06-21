@@ -1,4 +1,4 @@
-package eu.pb4.bof.config;
+package eu.pb4.bof.config.data;
 
 import java.util.ArrayList;
 import java.util.List;
