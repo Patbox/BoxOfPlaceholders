@@ -10,7 +10,9 @@ import net.fabricmc.loader.api.FabricLoader;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -28,19 +30,34 @@ public class ConfigManager {
             ConfigData config;
             File configFile = new File(configDir.toFile(), "config.json");
 
+            File staticFile = new File(configDir.toFile(), "static.json");
+
             if (configFile.exists()) {
                 config = GSON.fromJson(new InputStreamReader(new FileInputStream(configFile), StandardCharsets.UTF_8), ConfigData.class);
             } else {
                 config = new ConfigData();
             }
 
-            CONFIG = new Config(config);
+            Map<String, String> staticText;
 
-            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile), StandardCharsets.UTF_8));
-            writer.write(GSON.toJson(config));
-            writer.close();
+            if (staticFile.exists()) {
+                staticText = GSON.fromJson(new InputStreamReader(new FileInputStream(staticFile), StandardCharsets.UTF_8), Map.class);
+            } else {
+                staticText = Map.of("example", "Some text");
+            }
 
+            CONFIG = new Config(config, staticText);
 
+            {
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(configFile), StandardCharsets.UTF_8));
+                writer.write(GSON.toJson(config));
+                writer.close();
+            }
+            {
+                BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(staticFile), StandardCharsets.UTF_8));
+                writer.write(GSON.toJson(staticText));
+                writer.close();
+            }
             if (configAnimations.toFile().mkdirs()) {
                 BufferedWriter writer2 = new BufferedWriter(new FileWriter(new File(configAnimations.toFile(), "example.json")));
                 writer2.write(GSON.toJson(DefaultValues.exampleAnimationData()));

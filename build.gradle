@@ -12,6 +12,7 @@ group = project.maven_group
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 	maven { url 'https://jitpack.io' }
 	maven { url "https://maven.jamieswhiteshirt.com/libs-release/" }
 	maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
@@ -31,7 +32,7 @@ dependencies {
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation include('eu.pb4:placeholder-api:1.0.0-rc2-1.17')
+	modImplementation include('eu.pb4:placeholder-api:1.0.1+1.17')
 
 	modImplementation 'me.lucko:fabric-permissions-api:0.1-SNAPSHOT'
 	modCompileOnly "com.github.123456687548:vanish:1.16.5_1.2.3"

@@ -128,5 +128,13 @@ public class BoPPlaceholders {
                 return PlaceholderResult.value("" + x * info.getSpawningChunkCount() / CHUNK_AREA);
             }
         });
+
+        PlaceholderAPI.register(new Identifier("bop", "static"), (ctx) -> {
+            if (ctx.hasArgument() && ConfigManager.getConfig().staticText.containsKey(ctx.getArgument())) {
+                return PlaceholderResult.value(ConfigManager.getConfig().staticText.get(ctx.getArgument()));
+            } else {
+                return PlaceholderResult.invalid();
+            }
+        });
     }
 }

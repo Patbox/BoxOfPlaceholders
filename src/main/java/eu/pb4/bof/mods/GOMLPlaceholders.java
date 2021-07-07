@@ -11,10 +11,7 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class GOMLPlaceholders {
@@ -39,10 +36,10 @@ public class GOMLPlaceholders {
 
                 List<String> owners = new ArrayList<>();
                 for (UUID owner : claim.getValue().getOwners()) {
-                    GameProfile profile = ctx.getServer().getUserCache().getByUuid(owner);
-
-                    if (profile != null) {
-                        owners.add(profile.getName());
+                    Optional<GameProfile> profile = ctx.getServer().getUserCache().getByUuid(owner);
+                    
+                    if (profile.isPresent()) {
+                        owners.add(profile.get().getName());
                     }
                 }
 
@@ -72,10 +69,10 @@ public class GOMLPlaceholders {
 
                 List<String> trusted = new ArrayList<>();
                 for (UUID owner : claim.getValue().getTrusted()) {
-                    GameProfile profile = ctx.getServer().getUserCache().getByUuid(owner);
+                    Optional<GameProfile> profile = ctx.getServer().getUserCache().getByUuid(owner);
 
-                    if (profile != null) {
-                        trusted.add(profile.getName());
+                    if (profile.isPresent()) {
+                        trusted.add(profile.get().getName());
                     }
                 }
 
@@ -119,18 +116,18 @@ public class GOMLPlaceholders {
 
                 List<String> owners = new ArrayList<>();
                 for (UUID owner : claim.getValue().getOwners()) {
-                    GameProfile profile = ctx.getServer().getUserCache().getByUuid(owner);
+                    Optional<GameProfile> profile = ctx.getServer().getUserCache().getByUuid(owner);
 
-                    if (profile != null) {
-                        owners.add(profile.getName());
+                    if (profile.isPresent()) {
+                        owners.add(profile.get().getName());
                     }
                 }
                 List<String> trusted = new ArrayList<>();
                 for (UUID owner : claim.getValue().getTrusted()) {
-                    GameProfile profile = ctx.getServer().getUserCache().getByUuid(owner);
+                    Optional<GameProfile> profile = ctx.getServer().getUserCache().getByUuid(owner);
 
-                    if (profile != null) {
-                        trusted.add(profile.getName());
+                    if (profile.isPresent()) {
+                        trusted.add(profile.get().getName());
                     }
                 }
 
