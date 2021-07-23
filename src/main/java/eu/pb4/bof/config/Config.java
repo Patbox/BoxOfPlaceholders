@@ -15,6 +15,10 @@ public class Config {
 
     public final Text gomlClaimCanBuildInfo;
     public final Text gomlClaimCantBuildInfo;
+
+    public final Text luckpermsInvalidPrefix;
+    public final Text luckpermsInvalidSuffix;
+
     public final Map<String, Text> staticText;
 
 
@@ -29,5 +33,7 @@ public class Config {
         this.gomlNoClaimTrusted = TextParser.parse(data.gomlNoClaimTrusted);
         this.gomlClaimCanBuildInfo = TextParser.parse(data.gomlClaimCanBuildInfo);
         this.gomlClaimCantBuildInfo = TextParser.parse(data.gomlClaimCantBuildInfo);
+        this.luckpermsInvalidPrefix = TextParser.parse(data.luckpermsInvalidPrefix);
+        this.luckpermsInvalidSuffix = TextParser.parse(data.luckpermsInvalidSuffix);
     }
 }

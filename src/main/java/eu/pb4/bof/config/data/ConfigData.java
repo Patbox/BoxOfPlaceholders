@@ -11,4 +11,9 @@ public class ConfigData {
 
     public String gomlClaimCanBuildInfo = "${owners} <gray>(<green>${anchor}</green>)";
     public String gomlClaimCantBuildInfo = "${owners} <gray>(<red>${anchor}</red>)";
+
+
+    public String luckpermsInvalidPrefix = "";
+    public String luckpermsInvalidSuffix = "";
+
 }

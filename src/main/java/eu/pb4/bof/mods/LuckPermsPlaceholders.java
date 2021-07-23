@@ -1,6 +1,7 @@
 package eu.pb4.bof.mods;
 
 import eu.pb4.bof.Helper;
+import eu.pb4.bof.config.ConfigManager;
 import eu.pb4.placeholders.PlaceholderAPI;
 import eu.pb4.placeholders.PlaceholderResult;
 import eu.pb4.placeholders.TextParser;
@@ -13,6 +14,7 @@ import net.luckperms.api.node.NodeType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.Identifier;
+import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
 import java.util.Objects;
@@ -26,7 +28,7 @@ public class LuckPermsPlaceholders {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
             } else if (ctx.hasPlayer()) {
-                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
+                User user = getUser(ctx.getPlayer());
                 if (user != null) {
                     String out = "";
                     int amount;
@@ -53,7 +55,7 @@ public class LuckPermsPlaceholders {
 
                     return PlaceholderResult.value(out != null ? TextParser.parse(out) : LiteralText.EMPTY);
                 } else {
-                    return PlaceholderResult.invalid("No data!");
+                    return PlaceholderResult.value(ConfigManager.getConfig().luckpermsInvalidPrefix);
                 }
 
             } else {
@@ -65,7 +67,7 @@ public class LuckPermsPlaceholders {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
             } else if (ctx.hasPlayer()) {
-                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
+                User user = getUser(ctx.getPlayer());
                 if (user != null) {
                     String out = "";
                     int amount;
@@ -92,7 +94,7 @@ public class LuckPermsPlaceholders {
 
                     return PlaceholderResult.value(out != null ? TextParser.parse(out) : LiteralText.EMPTY);
                 } else {
-                    return PlaceholderResult.invalid("No data!");
+                    return PlaceholderResult.value(ConfigManager.getConfig().luckpermsInvalidSuffix);
                 }
 
             } else {
@@ -104,14 +106,14 @@ public class LuckPermsPlaceholders {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
             } else if (ctx.hasPlayer() && ctx.getArgument().length() > 0) {
-                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
+                User user = getUser(ctx.getPlayer());
                 Group group = LUCKPERMS.getGroupManager().getGroup(ctx.getArgument());
 
                 if (user != null && group != null) {
                     return PlaceholderResult.value(user.getInheritedGroups(user.getQueryOptions()).contains(group)
                             ? TextParser.parse(group.getCachedData().getMetaData().getPrefix()) : LiteralText.EMPTY);
                 } else {
-                    return PlaceholderResult.invalid("No data!");
+                    return PlaceholderResult.value(LiteralText.EMPTY);
                 }
 
             } else {
@@ -123,14 +125,14 @@ public class LuckPermsPlaceholders {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
             } else if (ctx.hasPlayer() && ctx.getArgument().length() > 0) {
-                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
+                User user = getUser(ctx.getPlayer());
                 Group group = LUCKPERMS.getGroupManager().getGroup(ctx.getArgument());
 
                 if (user != null && group != null) {
                     return PlaceholderResult.value(user.getInheritedGroups(user.getQueryOptions()).contains(group)
                             ? TextParser.parse(group.getCachedData().getMetaData().getSuffix()) : LiteralText.EMPTY);
                 } else {
-                    return PlaceholderResult.invalid("No data!");
+                    return PlaceholderResult.value(LiteralText.EMPTY);
                 }
 
             } else {
@@ -142,12 +144,12 @@ public class LuckPermsPlaceholders {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
             } else if (ctx.hasPlayer()) {
-                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
+                User user = getUser(ctx.getPlayer());
 
                 if (user != null) {
                     return PlaceholderResult.value(user.getPrimaryGroup());
                 } else {
-                    return PlaceholderResult.invalid("No data!");
+                    return PlaceholderResult.value(LiteralText.EMPTY);
                 }
 
             } else {
@@ -160,7 +162,7 @@ public class LuckPermsPlaceholders {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
             } else if (ctx.hasPlayer() && ctx.getArgument().length() > 0) {
-                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
+                User user = getUser(ctx.getPlayer());
 
                 if (user != null) {
                     Duration time = user.resolveInheritedNodes(user.getQueryOptions()).stream()
@@ -175,7 +177,7 @@ public class LuckPermsPlaceholders {
                             .orElse(Duration.ofMillis(0));
                     return PlaceholderResult.value(Helper.durationToString(time));
                 } else {
-                    return PlaceholderResult.invalid("No data!");
+                    return PlaceholderResult.value(LiteralText.EMPTY);
                 }
 
             } else {
@@ -187,7 +189,7 @@ public class LuckPermsPlaceholders {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
             } else if (ctx.hasPlayer() && ctx.getArgument().length() > 0) {
-                User user = LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(ctx.getPlayer());
+                User user = getUser(ctx.getPlayer());
 
                 if (user != null) {
                     Duration time = user.resolveInheritedNodes(user.getQueryOptions()).stream()
@@ -202,7 +204,7 @@ public class LuckPermsPlaceholders {
                             .orElse(Duration.ofMillis(0));
                     return PlaceholderResult.value(Helper.durationToString(time));
                 } else {
-                    return PlaceholderResult.invalid("No data!");
+                    return PlaceholderResult.value(LiteralText.EMPTY);
                 }
 
             } else {
@@ -213,12 +215,25 @@ public class LuckPermsPlaceholders {
 
 
     private static boolean getLuckPerms() {
+        if (LUCKPERMS != null) {
+            return false;
+        }
+
         try {
             LUCKPERMS = LuckPermsProvider.get();
             return false;
         } catch (Exception e) {
             LUCKPERMS = null;
             return true;
+        }
+    }
+
+    @Nullable
+    private static User getUser(ServerPlayerEntity player) {
+        try {
+            return LUCKPERMS.getPlayerAdapter(ServerPlayerEntity.class).getUser(player);
+        } catch (Exception e) {
+            return null;
         }
     }
 }

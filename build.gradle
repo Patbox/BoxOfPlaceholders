@@ -42,6 +42,7 @@ dependencies {
 	modCompileOnly "draylar:get-off-my-lawn:1.17-1.4.0-beta"
 	modCompileOnly "com.jamieswhiteshirt:rtree-3i-lite-fabric:0.3.0"
 
+	modRuntime "carpet:fabric-carpet:${project.carpet_core_version}"
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
