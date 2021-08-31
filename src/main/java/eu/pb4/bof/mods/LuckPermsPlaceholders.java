@@ -158,6 +158,23 @@ public class LuckPermsPlaceholders {
         });
 
 
+                PlaceholderAPI.register(new Identifier("luckperms", "display_name"), ctx -> {
+            if (getLuckPerms()) {
+                return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
+            } else if (ctx.hasPlayer()) {
+                User user = getUser(ctx.getPlayer());
+
+                if (user != null) {
+                    return PlaceholderResult.value(group.getDisplayName());
+                } else {
+                    return PlaceholderResult.value(LiteralText.EMPTY);
+                }
+
+            } else {
+                return PlaceholderResult.invalid("No player/argument!");
+            }
+        });
+
         PlaceholderAPI.register(new Identifier("luckperms", "group_expiry_time"), ctx -> {
             if (getLuckPerms()) {
                 return PlaceholderResult.invalid("Luckperms isn't loaded yet!");
