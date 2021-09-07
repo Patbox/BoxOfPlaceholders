@@ -26,10 +26,10 @@ public class ConfigManager {
             Path configDir = FabricLoader.getInstance().getConfigDir().resolve("boxofplacholders");
             Path configAnimations = configDir.resolve("animations");
 
+            configDir.toFile().mkdirs();
 
             ConfigData config;
             File configFile = new File(configDir.toFile(), "config.json");
-
             File staticFile = new File(configDir.toFile(), "static.json");
 
             if (configFile.exists()) {
