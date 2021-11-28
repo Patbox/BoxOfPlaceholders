@@ -27,7 +27,7 @@ public class GOMLPlaceholders {
                 wildnessText = TextParser.parse(ctx.getArgument());
             }
 
-            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getServerWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
+            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
 
             if (claims.size() == 0) {
                 return PlaceholderResult.value(wildnessText);
@@ -59,7 +59,7 @@ public class GOMLPlaceholders {
                 wildnessText = TextParser.parse(ctx.getArgument());
             }
 
-            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getServerWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
+            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
 
             if (claims.size() == 0) {
                 return PlaceholderResult.value(wildnessText);
@@ -92,7 +92,7 @@ public class GOMLPlaceholders {
                 wildnessText = TextParser.parse(ctx.getArgument());
             }
 
-            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getServerWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
+            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
 
             if (claims.size() == 0) {
                 return PlaceholderResult.value(wildnessText);
@@ -125,7 +125,7 @@ public class GOMLPlaceholders {
                 wildnessText = TextParser.parse(ctx.getArgument());
             }
 
-            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getServerWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
+            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
 
             if (claims.size() == 0) {
                 return PlaceholderResult.value(wildnessText);
@@ -171,7 +171,7 @@ public class GOMLPlaceholders {
                 }
             }
 
-            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getServerWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
+            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
 
 
             if (claims.size() == 0) {

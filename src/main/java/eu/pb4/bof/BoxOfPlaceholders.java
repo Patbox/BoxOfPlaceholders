@@ -21,7 +21,9 @@ public class BoxOfPlaceholders implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
+		this.crabboardDetection();
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
+			this.crabboardDetection();
 			ConfigManager.loadConfig();
 		});
 		INSTANCE = this;
@@ -45,5 +47,16 @@ public class BoxOfPlaceholders implements ModInitializer {
 		}
 
 		BoPPlaceholders.register();
+	}
+
+	private void crabboardDetection() {
+		if (FabricLoader.getInstance().isModLoaded("cardboard")) {
+			LOGGER.error("");
+			LOGGER.error("Cardboard detected! This mod doesn't work with it!");
+			LOGGER.error("You won't get any support as long as it's present!");
+			LOGGER.error("");
+			LOGGER.error("Read more: https://gist.github.com/Patbox/e44844294c358b614d347d369b0fc3bf");
+			LOGGER.error("");
+		}
 	}
 }

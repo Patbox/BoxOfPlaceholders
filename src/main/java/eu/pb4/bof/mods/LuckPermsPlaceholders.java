@@ -17,6 +17,8 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import java.util.SortedMap;
 
@@ -31,24 +33,30 @@ public class LuckPermsPlaceholders {
                 User user = getUser(ctx.getPlayer());
                 if (user != null) {
                     String out = "";
-                    int amount;
-                    try {
-                        amount = Integer.valueOf(ctx.getArgument());
-                    } catch (Exception e) {
-                        amount = 0;
-                    }
 
-                    if (ctx.getArgument().length() > 0 && amount > 0) {
+                    if (ctx.getArgument().length() > 0) {
+                        var args = ctx.getArgument().split("/", 2);
+                        int amount;
+                        try {
+                            amount = Math.max(Integer.valueOf(args[0]), 0);
+                        } catch (Exception e) {
+                            amount = 0;
+                        }
+
                         SortedMap<Integer, String> map = user.getCachedData().getMetaData().getPrefixes();
 
-                        if (amount > map.size()) {
-                            amount = map.size();
+                        List<String> list = new ArrayList<>();
+
+                        int pos = 0;
+                        for (var value : map.values()) {
+                            if (amount <= pos++) {
+                                continue;
+                            }
+
+                            list.add(value);
                         }
 
-                        for (int x = 1; x <= amount; x++) {
-                            out += map.get(x);
-                        }
-
+                        out = String.join(args.length == 2 ? args[1] : " ", list);
                     } else {
                         out = user.getCachedData().getMetaData().getPrefix();
                     }
@@ -70,24 +78,30 @@ public class LuckPermsPlaceholders {
                 User user = getUser(ctx.getPlayer());
                 if (user != null) {
                     String out = "";
-                    int amount;
-                    try {
-                        amount = Integer.valueOf(ctx.getArgument());
-                    } catch (Exception e) {
-                        amount = 0;
-                    }
 
-                    if (ctx.getArgument().length() > 0 && amount > 0) {
+                    if (ctx.getArgument().length() > 0) {
+                        var args = ctx.getArgument().split("/", 2);
+                        int amount;
+                        try {
+                            amount = Math.max(Integer.valueOf(args[0]), 0);
+                        } catch (Exception e) {
+                            amount = 0;
+                        }
+
                         SortedMap<Integer, String> map = user.getCachedData().getMetaData().getSuffixes();
 
-                        if (amount > map.size()) {
-                            amount = map.size();
+                        List<String> list = new ArrayList<>();
+
+                        int pos = 0;
+                        for (var value : map.values()) {
+                            if (amount <= pos++) {
+                                continue;
+                            }
+
+                            list.add(value);
                         }
 
-                        for (int x = 1; x <= amount; x++) {
-                            out += map.get(x);
-                        }
-
+                        out = String.join(args.length == 2 ? args[1] : " ", list);
                     } else {
                         out = user.getCachedData().getMetaData().getSuffix();
                     }

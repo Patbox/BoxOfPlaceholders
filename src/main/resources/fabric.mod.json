@@ -23,7 +23,7 @@
     "boxofplaceholders.mixins.json"
   ],
   "depends": {
-    "minecraft": ">=1.17.1",
-    "placeholder-api": ">=1.0.1"
+    "minecraft": ">=1.18-rc.1",
+    "placeholder-api": ">=1.1.3"
   }
 }

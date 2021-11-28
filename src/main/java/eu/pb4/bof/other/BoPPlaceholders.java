@@ -78,7 +78,7 @@ public class BoPPlaceholders {
         PlaceholderAPI.register(new Identifier("bop", "mob_count"), (ctx) -> {
             ServerWorld world;
             if (ctx.hasPlayer()) {
-                world = ctx.getPlayer().getServerWorld();
+                world = ctx.getPlayer().getWorld();
             } else {
                 world = ctx.getServer().getOverworld();
             }
@@ -105,7 +105,7 @@ public class BoPPlaceholders {
         PlaceholderAPI.register(new Identifier("bop", "mob_cap"), (ctx) -> {
             ServerWorld world;
             if (ctx.hasPlayer()) {
-                world = ctx.getPlayer().getServerWorld();
+                world = ctx.getPlayer().getWorld();
             } else {
                 world = ctx.getServer().getOverworld();
             }
