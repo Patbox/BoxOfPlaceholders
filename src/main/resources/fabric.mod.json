@@ -24,6 +24,6 @@
   ],
   "depends": {
     "minecraft": ">=1.19",
-    "placeholder-api": ">=2.0.0"
+    "placeholder-api": ">=1.9.9"
   }
 }
