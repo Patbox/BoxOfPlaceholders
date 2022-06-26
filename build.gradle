@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '0.10-SNAPSHOT'
+	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'maven-publish'
 }
 
@@ -19,6 +19,13 @@ repositories {
 	maven { url 'https://repo.lucko.me/' }
 	maven { url 'https://maven.nucleoid.xyz/' }
 	maven { url 'https://masa.dy.fi/maven' }
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
 
 	flatDir {
 		dirs './modsWithCompat'
@@ -33,10 +40,10 @@ dependencies {
 
 	modImplementation include(fabricApi.module("fabric-api-base", project.fabric_version))
 	modImplementation include(fabricApi.module("fabric-lifecycle-events-v1", project.fabric_version))
-	modImplementation include(fabricApi.module("fabric-command-api-v1", project.fabric_version))
+	modImplementation include(fabricApi.module("fabric-command-api-v2", project.fabric_version))
 
 
-	modImplementation include('eu.pb4:placeholder-api:1.1.3+1.17.1')
+	modImplementation include('eu.pb4:placeholder-api:2.0.0-beta.4+1.19')
 
 	modImplementation 'me.lucko:fabric-permissions-api:0.1-SNAPSHOT'
 	modCompileOnly "com.github.123456687548:vanish:1.16.5_1.2.3"
@@ -48,7 +55,7 @@ dependencies {
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
 
-	compileOnly 'net.luckperms:api:5.2'
+	compileOnly 'net.luckperms:api:5.4'
 }
 
 processResources {

@@ -1,7 +1,7 @@
 package eu.pb4.bof.config;
 
 import eu.pb4.bof.config.data.ConfigData;
-import eu.pb4.placeholders.TextParser;
+import eu.pb4.placeholders.api.TextParserUtils;
 import net.minecraft.text.Text;
 
 import java.util.HashMap;
@@ -26,14 +26,14 @@ public class Config {
         this.configData = data;
         this.staticText = new HashMap<>();
         for (Map.Entry<String, String> entry : staticText.entrySet()) {
-            this.staticText.put(entry.getKey(), TextParser.parse(entry.getValue()));
+            this.staticText.put(entry.getKey(), TextParserUtils.formatText(entry.getValue()));
         }
-        this.gomlNoClaimInfo = TextParser.parse(data.gomlNoClaimInfo);
-        this.gomlNoClaimOwners = TextParser.parse(data.gomlNoClaimOwners);
-        this.gomlNoClaimTrusted = TextParser.parse(data.gomlNoClaimTrusted);
-        this.gomlClaimCanBuildInfo = TextParser.parse(data.gomlClaimCanBuildInfo);
-        this.gomlClaimCantBuildInfo = TextParser.parse(data.gomlClaimCantBuildInfo);
-        this.luckpermsInvalidPrefix = TextParser.parse(data.luckpermsInvalidPrefix);
-        this.luckpermsInvalidSuffix = TextParser.parse(data.luckpermsInvalidSuffix);
+        this.gomlNoClaimInfo = TextParserUtils.formatText(data.gomlNoClaimInfo);
+        this.gomlNoClaimOwners = TextParserUtils.formatText(data.gomlNoClaimOwners);
+        this.gomlNoClaimTrusted = TextParserUtils.formatText(data.gomlNoClaimTrusted);
+        this.gomlClaimCanBuildInfo = TextParserUtils.formatText(data.gomlClaimCanBuildInfo);
+        this.gomlClaimCantBuildInfo = TextParserUtils.formatText(data.gomlClaimCantBuildInfo);
+        this.luckpermsInvalidPrefix = TextParserUtils.formatText(data.luckpermsInvalidPrefix);
+        this.luckpermsInvalidSuffix = TextParserUtils.formatText(data.luckpermsInvalidSuffix);
     }
 }

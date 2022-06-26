@@ -2,8 +2,8 @@ package eu.pb4.bof.other;
 
 import eu.pb4.bof.config.Animation;
 import eu.pb4.bof.config.ConfigManager;
-import eu.pb4.placeholders.PlaceholderAPI;
-import eu.pb4.placeholders.PlaceholderResult;
+import eu.pb4.placeholders.api.PlaceholderResult;
+import eu.pb4.placeholders.api.Placeholders;
 import net.minecraft.entity.SpawnGroup;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
@@ -18,41 +18,41 @@ public class BoPPlaceholders {
 
 
     public static void register() {
-        PlaceholderAPI.register(new Identifier("bop", "ram_max"), (ctx) -> {
+        Placeholders.register(new Identifier("bop", "ram_max"), (ctx, argument) -> {
             MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
             MemoryUsage heapUsage = memoryMXBean.getHeapMemoryUsage();
 
-            return PlaceholderResult.value(ctx.getArgument().equals("gb")
+            return PlaceholderResult.value((argument != null && argument.equals("gb"))
                     ? String.format("%.1f", (float) heapUsage.getMax() / 1073741824)
                     : String.format("%d", heapUsage.getMax() / 1048576));
         });
 
-        PlaceholderAPI.register(new Identifier("bop", "ram_used"), (ctx) -> {
+        Placeholders.register(new Identifier("bop", "ram_used"), (ctx, argument) -> {
             MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
             MemoryUsage heapUsage = memoryMXBean.getHeapMemoryUsage();
 
-            return PlaceholderResult.value(ctx.getArgument().equals("gb")
+            return PlaceholderResult.value((argument != null && argument.equals("gb"))
                     ? String.format("%.1f", (float) heapUsage.getUsed() / 1073741824)
                     : String.format("%d", heapUsage.getUsed() / 1048576));
         });
 
-        PlaceholderAPI.register(new Identifier("bop", "ram_free"), (ctx) -> {
+        Placeholders.register(new Identifier("bop", "ram_free"), (ctx, argument) -> {
             MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
             MemoryUsage heapUsage = memoryMXBean.getHeapMemoryUsage();
 
-            return PlaceholderResult.value(ctx.getArgument().equals("gb")
+            return PlaceholderResult.value((argument != null && argument.equals("gb"))
                     ? String.format("%.1f", (float) (heapUsage.getMax() - heapUsage.getUsed()) / 1073741824)
                     : String.format("%d", (heapUsage.getMax() - heapUsage.getUsed()) / 1048576));
         });
 
-        PlaceholderAPI.register(new Identifier("bop", "ram_used_percent"), (ctx) -> {
+        Placeholders.register(new Identifier("bop", "ram_used_percent"), (ctx, argument) -> {
             MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
             MemoryUsage heapUsage = memoryMXBean.getHeapMemoryUsage();
 
             return PlaceholderResult.value(String.format("%.1f", (float) heapUsage.getUsed() / heapUsage.getMax() * 100));
         });
 
-        PlaceholderAPI.register(new Identifier("bop", "ram_free_percent"), (ctx) -> {
+        Placeholders.register(new Identifier("bop", "ram_free_percent"), (ctx, argument) -> {
             MemoryMXBean memoryMXBean = ManagementFactory.getMemoryMXBean();
             MemoryUsage heapUsage = memoryMXBean.getHeapMemoryUsage();
 
@@ -60,14 +60,14 @@ public class BoPPlaceholders {
 
         });
 
-        PlaceholderAPI.register(new Identifier("bop", "animation"), (ctx) -> {
-            if (ctx.hasArgument()) {
-                Animation animation = ConfigManager.getAnimation(ctx.getArgument());
+        Placeholders.register(new Identifier("bop", "animation"), (ctx, argument) -> {
+            if (argument != null) {
+                Animation animation = ConfigManager.getAnimation(argument);
                 if (animation != null) {
                     return PlaceholderResult.value(
                             ctx.hasPlayer()
-                                    ? animation.getAnimationFrame(ctx.getPlayer())
-                                    : animation.getAnimationFrame(ctx.getServer())
+                                    ? animation.getAnimationFrame(ctx.player())
+                                    : animation.getAnimationFrame(ctx.server())
                     );
                 }
             }
@@ -75,19 +75,19 @@ public class BoPPlaceholders {
             return PlaceholderResult.invalid("Invalid animation");
         });
 
-        PlaceholderAPI.register(new Identifier("bop", "mob_count"), (ctx) -> {
+        Placeholders.register(new Identifier("bop", "mob_count"), (ctx, argument) -> {
             ServerWorld world;
             if (ctx.hasPlayer()) {
-                world = ctx.getPlayer().getWorld();
+                world = ctx.player().getWorld();
             } else {
-                world = ctx.getServer().getOverworld();
+                world = ctx.server().getOverworld();
             }
 
             SpawnHelper.Info info = world.getChunkManager().getSpawnInfo();
 
             SpawnGroup spawnGroup = null;
-            if (ctx.hasArgument()) {
-                spawnGroup = SpawnGroup.byName(ctx.getArgument());
+            if (argument != null) {
+                spawnGroup = SpawnGroup.valueOf(argument);
             }
 
             if (spawnGroup != null) {
@@ -102,19 +102,19 @@ public class BoPPlaceholders {
             }
         });
 
-        PlaceholderAPI.register(new Identifier("bop", "mob_cap"), (ctx) -> {
+        Placeholders.register(new Identifier("bop", "mob_cap"), (ctx, argument) -> {
             ServerWorld world;
             if (ctx.hasPlayer()) {
-                world = ctx.getPlayer().getWorld();
+                world = ctx.player().getWorld();
             } else {
-                world = ctx.getServer().getOverworld();
+                world = ctx.server().getOverworld();
             }
 
             SpawnHelper.Info info = world.getChunkManager().getSpawnInfo();
 
             SpawnGroup spawnGroup = null;
-            if (ctx.hasArgument()) {
-                spawnGroup = SpawnGroup.byName(ctx.getArgument());
+            if (argument != null) {
+                spawnGroup = SpawnGroup.valueOf(argument);
             }
 
             if (spawnGroup != null) {
@@ -129,9 +129,9 @@ public class BoPPlaceholders {
             }
         });
 
-        PlaceholderAPI.register(new Identifier("bop", "static"), (ctx) -> {
-            if (ctx.hasArgument() && ConfigManager.getConfig().staticText.containsKey(ctx.getArgument())) {
-                return PlaceholderResult.value(ConfigManager.getConfig().staticText.get(ctx.getArgument()));
+        Placeholders.register(new Identifier("bop", "static"), (ctx, argument) -> {
+            if (argument != null && ConfigManager.getConfig().staticText.containsKey(argument)) {
+                return PlaceholderResult.value(ConfigManager.getConfig().staticText.get(argument));
             } else {
                 return PlaceholderResult.invalid();
             }

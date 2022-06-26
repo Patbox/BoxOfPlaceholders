@@ -1,33 +1,33 @@
 package eu.pb4.bof.mods;
 
+import com.jamieswhiteshirt.rtree3i.Entry;
 import com.mojang.authlib.GameProfile;
 import draylar.goml.api.ClaimUtils;
 import eu.pb4.bof.config.Config;
 import eu.pb4.bof.config.ConfigManager;
-import eu.pb4.placeholders.PlaceholderAPI;
-import eu.pb4.placeholders.PlaceholderResult;
-import eu.pb4.placeholders.TextParser;
-import net.minecraft.text.LiteralText;
+import eu.pb4.placeholders.api.PlaceholderResult;
+import eu.pb4.placeholders.api.Placeholders;
+import eu.pb4.placeholders.api.TextParserUtils;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
+//(argument != null && argument.equals("gb"))
 public class GOMLPlaceholders {
     public static void register() {
-        PlaceholderAPI.register(new Identifier("goml", "claim_owners"), (ctx) -> {
+        Placeholders.register(new Identifier("goml", "claim_owners"), (ctx, argument) -> {
             if (!ctx.hasPlayer()) {
                 return PlaceholderResult.invalid("No player!");
             }
             Config config = ConfigManager.getConfig();
 
             Text wildnessText = config.gomlNoClaimOwners;
-            if (ctx.hasArgument()) {
-                wildnessText = TextParser.parse(ctx.getArgument());
+            if (argument != null) {
+                wildnessText = TextParserUtils.formatText(argument);
             }
 
-            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
+            var claims = ClaimUtils.getClaimsAt(ctx.player().getWorld(), ctx.player().getBlockPos()).collect(Collectors.toList());
 
             if (claims.size() == 0) {
                 return PlaceholderResult.value(wildnessText);
@@ -36,7 +36,7 @@ public class GOMLPlaceholders {
 
                 List<String> owners = new ArrayList<>();
                 for (UUID owner : claim.getValue().getOwners()) {
-                    Optional<GameProfile> profile = ctx.getServer().getUserCache().getByUuid(owner);
+                    Optional<GameProfile> profile = ctx.server().getUserCache().getByUuid(owner);
                     
                     if (profile.isPresent()) {
                         owners.add(profile.get().getName());
@@ -44,22 +44,22 @@ public class GOMLPlaceholders {
                 }
 
 
-                return PlaceholderResult.value(owners.size() > 0 ? new LiteralText(String.join(", ", owners)) : wildnessText);
+                return PlaceholderResult.value(owners.size() > 0 ? Text.literal(String.join(", ", owners)) : wildnessText);
             }
         });
 
-        PlaceholderAPI.register(new Identifier("goml", "claim_owners"), (ctx) -> {
+        Placeholders.register(new Identifier("goml", "claim_owners"), (ctx, argument)-> {
             if (!ctx.hasPlayer()) {
                 return PlaceholderResult.invalid("No player!");
             }
             Config config = ConfigManager.getConfig();
 
             Text wildnessText = config.gomlNoClaimOwners;
-            if (ctx.hasArgument()) {
-                wildnessText = TextParser.parse(ctx.getArgument());
+            if (argument != null) {
+                wildnessText = TextParserUtils.formatText(argument);
             }
 
-            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
+            var claims = ClaimUtils.getClaimsAt(ctx.player().getWorld(), ctx.player().getBlockPos()).collect(Collectors.toList());
 
             if (claims.size() == 0) {
                 return PlaceholderResult.value(wildnessText);
@@ -68,7 +68,7 @@ public class GOMLPlaceholders {
 
                 List<String> owners = new ArrayList<>();
                 for (UUID owner : claim.getValue().getOwners()) {
-                    Optional<GameProfile> profile = ctx.getServer().getUserCache().getByUuid(owner);
+                    Optional<GameProfile> profile = ctx.server().getUserCache().getByUuid(owner);
 
                     if (profile.isPresent()) {
                         owners.add(profile.get().getId().toString());
@@ -76,11 +76,11 @@ public class GOMLPlaceholders {
                 }
 
 
-                return PlaceholderResult.value(owners.size() > 0 ? new LiteralText(String.join(", ", owners)) : wildnessText);
+                return PlaceholderResult.value(owners.size() > 0 ? Text.literal(String.join(", ", owners)) : wildnessText);
             }
         });
 
-        PlaceholderAPI.register(new Identifier("goml", "claim_trusted"), (ctx) -> {
+        Placeholders.register(new Identifier("goml", "claim_trusted"), (ctx, argument)-> {
             if (!ctx.hasPlayer()) {
                 return PlaceholderResult.invalid("No player!");
             }
@@ -88,11 +88,11 @@ public class GOMLPlaceholders {
             Config config = ConfigManager.getConfig();
 
             Text wildnessText = config.gomlNoClaimTrusted;
-            if (ctx.hasArgument()) {
-                wildnessText = TextParser.parse(ctx.getArgument());
+            if (argument != null) {
+                wildnessText = TextParserUtils.formatText(argument);
             }
 
-            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
+            var claims = ClaimUtils.getClaimsAt(ctx.player().getWorld(), ctx.player().getBlockPos()).collect(Collectors.toList());
 
             if (claims.size() == 0) {
                 return PlaceholderResult.value(wildnessText);
@@ -101,7 +101,7 @@ public class GOMLPlaceholders {
 
                 List<String> trusted = new ArrayList<>();
                 for (UUID owner : claim.getValue().getTrusted()) {
-                    Optional<GameProfile> profile = ctx.getServer().getUserCache().getByUuid(owner);
+                    Optional<GameProfile> profile = ctx.server().getUserCache().getByUuid(owner);
 
                     if (profile.isPresent()) {
                         trusted.add(profile.get().getName());
@@ -109,11 +109,11 @@ public class GOMLPlaceholders {
                 }
 
 
-                return PlaceholderResult.value(trusted.size() > 0 ? new LiteralText(String.join(", ", trusted)) : wildnessText);
+                return PlaceholderResult.value(trusted.size() > 0 ? Text.literal(String.join(", ", trusted)) : wildnessText);
             }
         });
 
-        PlaceholderAPI.register(new Identifier("goml", "claim_trusted_uuid"), (ctx) -> {
+        Placeholders.register(new Identifier("goml", "claim_trusted_uuid"), (ctx, argument)-> {
             if (!ctx.hasPlayer()) {
                 return PlaceholderResult.invalid("No player!");
             }
@@ -121,11 +121,11 @@ public class GOMLPlaceholders {
             Config config = ConfigManager.getConfig();
 
             Text wildnessText = config.gomlNoClaimTrusted;
-            if (ctx.hasArgument()) {
-                wildnessText = TextParser.parse(ctx.getArgument());
+            if (argument != null) {
+                wildnessText = TextParserUtils.formatText(argument);
             }
 
-            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
+            var claims = ClaimUtils.getClaimsAt(ctx.player().getWorld(), ctx.player().getBlockPos()).collect(Collectors.toList());
 
             if (claims.size() == 0) {
                 return PlaceholderResult.value(wildnessText);
@@ -134,7 +134,7 @@ public class GOMLPlaceholders {
 
                 List<String> trusted = new ArrayList<>();
                 for (UUID owner : claim.getValue().getTrusted()) {
-                    Optional<GameProfile> profile = ctx.getServer().getUserCache().getByUuid(owner);
+                    Optional<GameProfile> profile = ctx.server().getUserCache().getByUuid(owner);
 
                     if (profile.isPresent()) {
                         trusted.add(profile.get().getId().toString());
@@ -142,11 +142,11 @@ public class GOMLPlaceholders {
                 }
 
 
-                return PlaceholderResult.value(trusted.size() > 0 ? new LiteralText(String.join(", ", trusted)) : wildnessText);
+                return PlaceholderResult.value(trusted.size() > 0 ? Text.literal(String.join(", ", trusted)) : wildnessText);
             }
         });
 
-        PlaceholderAPI.register(new Identifier("goml", "claim_info"), (ctx) -> {
+        Placeholders.register(new Identifier("goml", "claim_info"), (ctx, argument)-> {
             if (!ctx.hasPlayer()) {
                 return PlaceholderResult.invalid("No player!");
             }
@@ -157,21 +157,21 @@ public class GOMLPlaceholders {
             Text canBuildText = config.gomlClaimCanBuildInfo;
             Text cantBuildText = config.gomlClaimCantBuildInfo;
 
-            if (ctx.hasArgument()) {
-                String[] texts = ctx.getArgument().replace("\\/", "&bslsh;").split("/");
+            if (argument != null) {
+                String[] texts = argument.replace("\\/", "&bslsh;").split("/");
 
                 if (texts.length > 0) {
-                    wildnessText = TextParser.parse(texts[0].replace("&bslsh;", "/"));
+                    wildnessText = TextParserUtils.formatText(texts[0].replace("&bslsh;", "/"));
                 }
                 if (texts.length > 1) {
-                    canBuildText = TextParser.parse(texts[1].replace("&bslsh;", "/"));
+                    canBuildText = TextParserUtils.formatText(texts[1].replace("&bslsh;", "/"));
                 }
                 if (texts.length > 2) {
-                    cantBuildText = TextParser.parse(texts[2].replace("&bslsh;", "/"));
+                    cantBuildText = TextParserUtils.formatText(texts[2].replace("&bslsh;", "/"));
                 }
             }
 
-            var claims = ClaimUtils.getClaimsAt(ctx.getPlayer().getWorld(), ctx.getPlayer().getBlockPos()).collect(Collectors.toList());
+            var claims = ClaimUtils.getClaimsAt(ctx.player().getWorld(), ctx.player().getBlockPos()).collect(Collectors.toList());
 
 
             if (claims.size() == 0) {
@@ -183,7 +183,7 @@ public class GOMLPlaceholders {
                 List<String> ownersUuid = new ArrayList<>();
 
                 for (UUID owner : claim.getValue().getOwners()) {
-                    Optional<GameProfile> profile = ctx.getServer().getUserCache().getByUuid(owner);
+                    Optional<GameProfile> profile = ctx.server().getUserCache().getByUuid(owner);
 
                     if (profile.isPresent()) {
                         owners.add(profile.get().getName());
@@ -193,7 +193,7 @@ public class GOMLPlaceholders {
                 List<String> trusted = new ArrayList<>();
                 List<String> trustedUuid = new ArrayList<>();
                 for (UUID owner : claim.getValue().getTrusted()) {
-                    Optional<GameProfile> profile = ctx.getServer().getUserCache().getByUuid(owner);
+                    Optional<GameProfile> profile = ctx.server().getUserCache().getByUuid(owner);
 
                     if (profile.isPresent()) {
                         trusted.add(profile.get().getName());
@@ -202,14 +202,14 @@ public class GOMLPlaceholders {
                 }
 
 
-                return PlaceholderResult.value(PlaceholderAPI.parsePredefinedText(
-                        claim.getValue().hasPermission(ctx.getPlayer()) ? canBuildText : cantBuildText,
-                        PlaceholderAPI.PREDEFINED_PLACEHOLDER_PATTERN,
-                        Map.of("owners", new LiteralText(String.join(", ", owners)),
-                                "owners_uuid", new LiteralText(String.join(", ", ownersUuid)),
-                                "trusted", new LiteralText(String.join(", ", trusted)),
-                                "trusted_uuid", new LiteralText(String.join(", ", trustedUuid)),
-                                "anchor", new LiteralText(claim.getValue().getOrigin().toShortString())
+                return PlaceholderResult.value(Placeholders.parseText(
+                        claim.getValue().hasPermission(ctx.player()) ? canBuildText : cantBuildText,
+                        Placeholders.PREDEFINED_PLACEHOLDER_PATTERN,
+                        Map.of("owners", Text.literal(String.join(", ", owners)),
+                                "owners_uuid", Text.literal(String.join(", ", ownersUuid)),
+                                "trusted", Text.literal(String.join(", ", trusted)),
+                                "trusted_uuid", Text.literal(String.join(", ", trustedUuid)),
+                                "anchor", Text.literal(claim.getValue().getOrigin().toShortString())
                         )));
             }
         });
