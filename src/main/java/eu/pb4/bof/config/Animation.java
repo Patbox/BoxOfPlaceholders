@@ -1,7 +1,9 @@
 package eu.pb4.bof.config;
 
-import eu.pb4.bof.Helper;
-import eu.pb4.placeholders.PlaceholderAPI;
+import eu.pb4.bof.config.data.AnimationData;
+import eu.pb4.placeholders.api.PlaceholderContext;
+import eu.pb4.placeholders.api.Placeholders;
+import eu.pb4.placeholders.api.TextParserUtils;
 import it.unimi.dsi.fastutil.objects.Object2IntArrayMap;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -22,7 +24,7 @@ public class Animation {
         animationRate = data.updateRate > 0 ? data.updateRate : 1;
 
         for (String frame : data.frames) {
-            Text text = Helper.parseMiniMessage(frame);
+            Text text = TextParserUtils.formatText(frame);
             frames.add(text);
         }
     }
@@ -41,7 +43,7 @@ public class Animation {
 
         animationStatus.put(server, frame);
 
-        return PlaceholderAPI.parseText(frames.get(realFrame), server);
+        return Placeholders.parseText((frames.get(realFrame)), PlaceholderContext.of(server));
     }
 
     public Text getAnimationFrame(ServerPlayerEntity player) {
@@ -56,6 +58,6 @@ public class Animation {
 
         animationStatus.put(player.getUuid(), frame);
 
-        return PlaceholderAPI.parseText(frames.get(realFrame), player);
+        return Placeholders.parseText(frames.get(realFrame), PlaceholderContext.of(player));
     }
 }

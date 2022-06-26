@@ -1,16 +1,13 @@
 package eu.pb4.bof;
 
 import eu.pb4.bof.config.ConfigManager;
+import eu.pb4.bof.mods.GOMLPlaceholders;
 import eu.pb4.bof.mods.LuckPermsPlaceholders;
-import eu.pb4.bof.mods.PlasmidPlaceholders;
 import eu.pb4.bof.mods.VanishPlaceholders;
-import eu.pb4.bof.other.MiniMessagePlaceholders;
-import eu.pb4.bof.other.BoFPlaceholders;
+import eu.pb4.bof.other.BoPPlaceholders;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.lifecycle.v1.ServerLifecycleEvents;
 import net.fabricmc.loader.api.FabricLoader;
-import net.kyori.adventure.platform.fabric.FabricServerAudiences;
-import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -18,23 +15,17 @@ public class BoxOfPlaceholders implements ModInitializer {
 	public static final Logger LOGGER = LogManager.getLogger("Box of placeholders");
 	private static BoxOfPlaceholders INSTANCE;
 
-	public static final MiniMessage miniMessage = MiniMessage.get();
-	private FabricServerAudiences audiences;
-
-	public static FabricServerAudiences getAdventure() {
-		return INSTANCE.audiences;
-	}
 	public static BoxOfPlaceholders getInstance() {
 		return INSTANCE;
 	}
 
 	@Override
 	public void onInitialize() {
+		this.crabboardDetection();
 		ServerLifecycleEvents.SERVER_STARTING.register(server -> {
-			this.audiences = FabricServerAudiences.of(server);
+			this.crabboardDetection();
 			ConfigManager.loadConfig();
 		});
-		ServerLifecycleEvents.SERVER_STOPPED.register(server -> this.audiences = null);
 		INSTANCE = this;
 
 		FabricLoader loader = FabricLoader.getInstance();
@@ -48,12 +39,24 @@ public class BoxOfPlaceholders implements ModInitializer {
 			VanishPlaceholders.register();
 		}
 
-		if (loader.isModLoaded("plasmid")) {
-			PlasmidPlaceholders.register();
+		if (loader.isModLoaded("goml")) {
+			GOMLPlaceholders.register();
 		}
 
-		MiniMessagePlaceholders.register();
-		BoFPlaceholders.register();
+		if (loader.isModLoaded("plasmid")) {
+		}
 
+		BoPPlaceholders.register();
+	}
+
+	private void crabboardDetection() {
+		if (FabricLoader.getInstance().isModLoaded("cardboard")) {
+			LOGGER.error("");
+			LOGGER.error("Cardboard detected! This mod doesn't work with it!");
+			LOGGER.error("You won't get any support as long as it's present!");
+			LOGGER.error("");
+			LOGGER.error("Read more: https://gist.github.com/Patbox/e44844294c358b614d347d369b0fc3bf");
+			LOGGER.error("");
+		}
 	}
 }

@@ -23,9 +23,7 @@
     "boxofplaceholders.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.7.4",
-    "fabric": "*",
-    "minecraft": "*",
-    "placeholder-api": ">=0.2.0"
+    "minecraft": ">=1.19",
+    "placeholder-api": ">=1.9.9"
   }
 }

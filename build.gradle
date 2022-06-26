@@ -1,10 +1,10 @@
 plugins {
-	id 'fabric-loom' version '0.5-SNAPSHOT'
+	id 'fabric-loom' version '0.12-SNAPSHOT'
 	id 'maven-publish'
 }
 
-sourceCompatibility = JavaVersion.VERSION_1_8
-targetCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
 version = project.mod_version
@@ -12,11 +12,24 @@ group = project.maven_group
 
 repositories {
 	mavenCentral()
+	mavenLocal()
 	maven { url 'https://jitpack.io' }
+	maven { url "https://maven.jamieswhiteshirt.com/libs-release/" }
 	maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
 	maven { url 'https://repo.lucko.me/' }
 	maven { url 'https://maven.nucleoid.xyz/' }
 	maven { url 'https://masa.dy.fi/maven' }
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
+
+	flatDir {
+		dirs './modsWithCompat'
+	}
 }
 
 dependencies {
@@ -24,24 +37,25 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 	modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-	modImplementation include("com.github.Patbox:FabricPlaceholderAPI:0.3.0")
+	modImplementation include(fabricApi.module("fabric-api-base", project.fabric_version))
+	modImplementation include(fabricApi.module("fabric-lifecycle-events-v1", project.fabric_version))
+	modImplementation include(fabricApi.module("fabric-command-api-v2", project.fabric_version))
+
+
+	modImplementation include('eu.pb4:placeholder-api:2.0.0-beta.4+1.19')
 
 	modImplementation 'me.lucko:fabric-permissions-api:0.1-SNAPSHOT'
-	modImplementation "com.github.SuperCoder7979:databreaker:0.2.6"
-	modImplementation "com.github.123456687548:vanish:1.16.5_1.2.3"
-	modImplementation "xyz.nucleoid:plasmid:0.4.122"
-	modImplementation "com.github.Patbox:StyledPlayerList:1.2.0"
+	modCompileOnly "com.github.123456687548:vanish:1.16.5_1.2.3"
+	//modImplementation "xyz.nucleoid:plasmid:0.4.122"
 
-
-	modImplementation include("net.kyori:adventure-platform-fabric:4.0.0-SNAPSHOT")
-	implementation include("net.kyori:adventure-text-minimessage:4.1.0-SNAPSHOT")
+	modCompileOnly "draylar:get-off-my-lawn:1.17-1.4.0-beta"
+	modCompileOnly "com.jamieswhiteshirt:rtree-3i-lite-fabric:0.3.0"
 
 	// PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
 	// You may need to force-disable transitiveness on them.
 
-	compileOnly 'net.luckperms:api:5.2'
+	compileOnly 'net.luckperms:api:5.4'
 }
 
 processResources {
@@ -62,10 +76,7 @@ tasks.withType(JavaCompile).configureEach {
 	// The Minecraft launcher currently installs Java 8 for users, so your mod probably wants to target Java 8 too
 	// JDK 9 introduced a new way of specifying this that will make sure no newer classes or methods are used.
 	// We'll use that if it's available, but otherwise we'll use the older option.
-	def targetVersion = 8
-	if (JavaVersion.current().isJava9Compatible()) {
-		 it.options.release = targetVersion
-	}
+	it.options.release = 17
 }
 
 java {
